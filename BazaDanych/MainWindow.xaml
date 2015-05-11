@@ -1,0 +1,39 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:BazaDanych" x:Class="BazaDanych.MainWindow"
+        Title="MainWindow" Height="600" Width="800" x:Name="mainWindow" ResizeMode="CanMinimize">
+    <Window.Resources>
+        <ContextMenu x:Key="tableContextMenu" x:Name="tableContextMenu">
+            <MenuItem Header="Odśwież"/>
+            <Separator/>
+            <MenuItem Header="Pokaż tabelę"/>
+            <MenuItem Header="Dodaj rekord"/>
+            <MenuItem Header="Szukaj rekordów"/>
+        </ContextMenu>
+    </Window.Resources>
+    <DockPanel x:Name="_mainLayout">
+        <Menu x:Name="_mainMenu" IsMainMenu="True" DockPanel.Dock="Top" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="1">
+            <MenuItem x:Name="_menuConnect" Header="_Połączenie">
+                <MenuItem x:Name="_submenuConnect" Header="Połącz z bazą danych" IsEnabled="True" Click="onConnectToDatabaseClicked"/>
+                <MenuItem x:Name="_submenuDisconnect" Header="Rozłącz" IsEnabled="False" Click="onDisconnectFromDatabaseClicked"/>
+                <MenuItem x:Name="_submenuConnectSettings" Header="Ustawienia połączenie" Click="onConnectionSettingsClicked"/>
+            </MenuItem>
+        </Menu>
+        <Border x:Name="_borderTablesView" DockPanel.Dock="Left" Width="160" HorizontalAlignment="Left" BorderThickness="1" BorderBrush="Black">
+            <DockPanel x:Name="_panelTablesView">
+                <Border DockPanel.Dock="Top" BorderBrush="DimGray" BorderThickness="2">
+                    <Label Content="TABELE" TextBlock.FontSize="15" TextBlock.FontWeight="ExtraBold" Background="LightSlateGray" HorizontalContentAlignment="Center"/>
+                </Border>
+                <ListBox x:Name="_tableList" DockPanel.Dock="Bottom" Background="LightGray" SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Odśwież" Click="RefreshTables"/>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
+                </ListBox>
+            </DockPanel>
+        </Border>
+        <local:TableViewer x:Name="_tableView" DockPanel.Dock="Bottom"/>
+    </DockPanel>
+</Window>
