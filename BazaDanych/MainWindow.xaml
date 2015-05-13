@@ -21,18 +21,40 @@
             </MenuItem>
         </Menu>
         <Border x:Name="_borderTablesView" DockPanel.Dock="Left" Width="160" HorizontalAlignment="Left" BorderThickness="1" BorderBrush="Black">
-            <DockPanel x:Name="_panelTablesView">
-                <Border DockPanel.Dock="Top" BorderBrush="DimGray" BorderThickness="2">
-                    <Label Content="TABELE" TextBlock.FontSize="15" TextBlock.FontWeight="ExtraBold" Background="LightSlateGray" HorizontalContentAlignment="Center"/>
-                </Border>
-                <ListBox x:Name="_tableList" DockPanel.Dock="Bottom" Background="LightGray" SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                    <ListBox.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Odśwież" Click="RefreshTables"/>
-                        </ContextMenu>
-                    </ListBox.ContextMenu>
-                </ListBox>
-            </DockPanel>
+            <Grid x:Name="_panelTablesView">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*" MinHeight="35"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="10*" MinHeight="35"/>
+                </Grid.RowDefinitions>
+                <DockPanel Grid.Row="0">
+                    <Border DockPanel.Dock="Top" BorderBrush="DimGray" BorderThickness="2">
+                        <Label Content="TABELE" TextBlock.FontSize="15" TextBlock.FontWeight="ExtraBold" Background="LightSlateGray" HorizontalContentAlignment="Center"/>
+                    </Border>
+                    <ListBox DockPanel.Dock="Bottom" x:Name="_tableList" Background="LightGray" SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Auto" Height="Auto">
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Odśwież" Click="RefreshTables"/>
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                    </ListBox>
+                </DockPanel>
+                <GridSplitter Grid.Row="1" ResizeDirection="Rows" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Black"  Height="2"/>
+                <DockPanel Grid.Row="2">
+                    <Border DockPanel.Dock="Top" BorderBrush="DimGray" BorderThickness="2">
+                        <Label Content="WIDOKI" TextBlock.FontSize="15" TextBlock.FontWeight="ExtraBold" Background="LightSlateGray" HorizontalContentAlignment="Center"/>
+                    </Border>
+                    <ListBox DockPanel.Dock="Bottom" x:Name="_viewList" Background="LightGray" SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Auto" Height="Auto">
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Dodaj widok" Click="CreateView"/>
+                                <Separator/>
+                                <MenuItem Header="Odśwież" Click="RefreshTables"/>
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                    </ListBox>
+                </DockPanel>
+            </Grid>
         </Border>
         <local:TableViewer x:Name="_tableView" DockPanel.Dock="Bottom"/>
     </DockPanel>

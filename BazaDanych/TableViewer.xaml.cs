@@ -53,12 +53,12 @@ namespace BazaDanych
                     });
                 count++;
             }
-        }
-
-        public void LoadColumns(List<ColumnSchema> columns = null)
-        {
-            if (columns == null)
-                columns = tableSource.Columns;
+           // if (table.TableSchema.CanInsert)
+                butNewRecord.IsEnabled = true;
+           // else if (table.TableSchema.CanUpdate)
+                butEditRecord.IsEnabled = true;
+           // else if (table.TableSchema.CanDelete)
+                butDeleteRecord.IsEnabled = true;
         }
 
         private void test()

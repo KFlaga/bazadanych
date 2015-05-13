@@ -13,6 +13,9 @@ namespace BazaDanych
         {
             Table table = new Table(tabSchema);
 
+            if (reader == null)
+                return table;
+
             while (reader.Read())
             {
                 object[] vals = new object[tabSchema.Columns.Count];

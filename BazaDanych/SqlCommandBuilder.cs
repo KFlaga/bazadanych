@@ -75,7 +75,7 @@ namespace BazaDanych
                 cols.Add(col.Name);
             }
 
-            return BuildSelectStatement(schema.Name, cols.ToArray());
+            return BuildSelectStatement(schema.Owner+"."+schema.Name, cols.ToArray());
         }
 
         

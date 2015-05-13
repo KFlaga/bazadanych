@@ -48,7 +48,7 @@ namespace BazaDanych
             }
             catch (OracleException ex)
             {
-                MessageBox.Show("Nie można utworzyć połączenia: " + ex.Message);
+                MessageBox.Show("Nie można utworzyć połączenia:\n" + ex.Message);
                 return false;
             }
             if (connection.State != System.Data.ConnectionState.Open)
@@ -90,7 +90,7 @@ namespace BazaDanych
             }
             catch (OracleException ex)
             {
-                MessageBox.Show("Błąd podczas wykonywania polecenia SQL: " + ex.Message);
+                MessageBox.Show("Błąd podczas wykonywania polecenia SQL:\n" + ex.Message);
             }
         }
 
@@ -106,19 +106,17 @@ namespace BazaDanych
             }
             catch (OracleException ex)
             {
-                MessageBox.Show("Błąd podczas wykonywania zapytania SQL: " + ex.Message);
+                MessageBox.Show("Błąd podczas wykonywania zapytania SQL:\n" + ex.Message);
             }
             return reader;
         }
 
-        public TableSchema GetTableSchema(string tableName)
+        public TableSchema GetTableSchema(TableSchema tabSchema)
         {
             OracleCommand cmd = GetCommand("SELECT column_name, data_type, DATA_LENGTH, NULLABLE "+
-                    "FROM all_tab_columns WHERE table_name = '"+ tableName + "'", null);
+                    "FROM all_tab_columns WHERE table_name = '" + tabSchema.Name + "'", null);
             cmd.CommandTimeout = 5;
 
-            TableSchema tabSchema = new TableSchema();
-            tabSchema.Name = tableName;
             try
             {
                 OracleDataReader reader = cmd.ExecuteReader();
@@ -131,28 +129,50 @@ namespace BazaDanych
             }
             catch (OracleException ex)
             {
-                MessageBox.Show("Błąd podczas pobierania danych tabel: " + ex.Message);
+                MessageBox.Show("Błąd podczas pobierania danych tabel:\n" + ex.Message);
             }
             return tabSchema;
         }
 
-        public List<string> GetTableNames(string tablespace = "USER")
+        public TableSchema GetTablePrivileges(TableSchema schema)
         {
-            OracleCommand cmd = GetCommand("select table_name from tabs where tablespace_name='"+tablespace+"'", null);
+            OracleCommand cmd = GetCommand("SELECT privilege FROM USER_TAB_PRIVS WHERE table_name='"+schema.Owner+"."+schema.Name+"'", null);
             cmd.CommandTimeout = 5;
-            List<string> tables = new List<string>();
+            try
+            {
+                OracleDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    schema.GrantPrivilege(reader.GetString(0));
+                }
+            }
+            catch (OracleException ex)
+            {
+                MessageBox.Show("Błąd podczas pobierania praw użytkownika:\n" + ex.Message);
+            }
+            return schema;
+        }
+
+        public List<TableSchema> GetTableNames(string tablespace = "USER")
+        {
+            OracleCommand cmd = GetCommand("select table_name, owner from ALL_TABLES where tablespace_name='"+tablespace+"'", null);
+            cmd.CommandTimeout = 5;
+            List<TableSchema> tables = new List<TableSchema>();
 
             try
             {
                 OracleDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    tables.Add(reader.GetString(0));
+                    TableSchema tab = new TableSchema();
+                    tab.Name = reader.GetString(0);
+                    tab.Owner = reader.GetString(1);
+                    tables.Add(tab);
                 }
             }
             catch (OracleException ex)
             {
-                MessageBox.Show("Nie można pobrać tabel: " + ex.Message);
+                MessageBox.Show("Nie można pobrać tabel:\n" + ex.Message);
             }
             return tables;
         }

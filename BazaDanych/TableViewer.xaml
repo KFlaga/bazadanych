@@ -8,9 +8,9 @@
              d:DesignHeight="400" d:DesignWidth="400">
     <DockPanel>
         <DockPanel x:Name="toolbar" Background="LightGray" DockPanel.Dock="Top" Height="30" LastChildFill="False">
-            <Button x:Name="butNewRecord" Content="NEW" BorderBrush="Black" Margin="2" Click="butNewRecord_Click"/>
-            <Button Content="EDIT" BorderBrush="Black" Margin="2"/>
-            <Button Content="DELETE" BorderBrush="Black" Margin="2"/>
+            <Button x:Name="butNewRecord" Content="NEW" BorderBrush="Black" Margin="2" Click="butNewRecord_Click" IsEnabled="False"/>
+            <Button x:Name="butEditRecord" Content="EDIT" BorderBrush="Black" Margin="2" IsEnabled="False"/>
+            <Button x:Name="butDeleteRecord" Content="DELETE" BorderBrush="Black" Margin="2" IsEnabled="False"/>
             <Button Content="FILTER" BorderBrush="Black" Margin="2"/>
         </DockPanel>
         <ListView x:Name="mainView" DockPanel.Dock="Bottom">

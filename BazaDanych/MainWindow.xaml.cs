@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace BazaDanych
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        List<TableSchema> mainTableSchemas;
+
         DatabaseConnector dbConnector;
         ConnectionSettings connSettings;
         SqlCommandBuilder sqlBuilder;
@@ -17,6 +17,8 @@ namespace BazaDanych
 
         public MainWindow()
         {
+            mainTableSchemas = new List<TableSchema>();
+
             InitializeComponent();
             this.Closing += (s, e) => { dbConnector.Disconnect(); };
             this.Closed += (s, e) => { App.Current.Shutdown(); };
@@ -84,11 +86,14 @@ namespace BazaDanych
             if (dbConnector.Connected)
             {
                 _tableList.Items.Clear();
-                List<string> tables = dbConnector.GetTableNames("COURIER");
-                foreach (string table in tables)
+                mainTableSchemas.Clear();
+                mainTableSchemas = dbConnector.GetTableNames("COURIER");
+                for (int t = 0; t < mainTableSchemas.Count; t++ )
                 {
-                    TableSchema tabSchema = dbConnector.GetTableSchema(table);
-                    addTable(tabSchema);
+                    dbConnector.GetTableSchema(mainTableSchemas[t]);
+                    dbConnector.GetTablePrivileges(mainTableSchemas[t]);
+                    // if(tabSchema.CanSelect)
+                    addTableToView(mainTableSchemas[t]);
                 }
             }
         }
@@ -110,25 +115,27 @@ namespace BazaDanych
             return sqlInterpreter.InterpretSelectResult(dbConnector.SendSqlQuerry(sql),schema);
         }
 
-        private void addTable(TableSchema tabSchema)
+        private void addTableToView(TableSchema tabSchema)
         {
-            ListBoxItem table = new ListBoxItem();
-            table.Content = tabSchema;
-            table.ContextMenu = (ContextMenu)TryFindResource("tableContextMenu");
-            table.PreviewMouseRightButtonDown += (sender, e) =>
+            ListBoxItem tableItem = new ListBoxItem();
+            tableItem.Content = tabSchema;
+            tableItem.ContextMenu = (ContextMenu)TryFindResource("tableContextMenu");
+            tableItem.PreviewMouseRightButtonDown += (sender, e) =>
             {
                 ((ListBoxItem)sender).ContextMenu.Visibility = Visibility.Visible;
             };
-            table.PreviewMouseDoubleClick += (sender, e) =>
+            tableItem.PreviewMouseDoubleClick += (sender, e) =>
             {
                 ShowTable(((ListBoxItem)sender).Content as TableSchema);
             };
-            _tableList.Items.Add(table);
-            
+            _tableList.Items.Add(tableItem);
         }
 
         private void ShowTable(TableSchema tableSchema, List<ColumnSchema> columns = null)
         {
+            if (!dbConnector.Connected)
+                return;
+
             if (columns == null)
             {
                 columns = tableSchema.Columns;
@@ -136,6 +143,22 @@ namespace BazaDanych
             // Stwórz tabelę z podanymi kolumnami
 
             _tableView.ShowTable(LoadTable(tableSchema));
+        }
+
+        private void CreateView(object sender, RoutedEventArgs e)
+        {
+            if (dbConnector.Connected)
+            {
+                List<TableSchema> selectableTabs = new List<TableSchema>();
+                foreach (TableSchema tabSchema in mainTableSchemas)
+                {
+                 //   if(tabSchema.CanSelect)
+                        selectableTabs.Add(tabSchema);
+                }
+
+                ViewCreator creator = new ViewCreator(selectableTabs);
+                creator.ShowDialog();
+            }
         }
 
     }

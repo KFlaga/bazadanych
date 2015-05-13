@@ -12,6 +12,20 @@ namespace BazaDanych
         public Type type { get; private set; }
         public int MaxSize { get; private set; }
         public bool IsNullable { get; private set; }
+        public bool IsPrivateKey { get; private set; }
+        public bool IsForeignKey { get; private set; }
+        public TableSchema ReferenceTable { get; private set; }
+        public ColumnSchema ReferenceColumn { get; private set; }
+        public object DefaultValue { get; set; } 
+
+        public ColumnSchema()
+        {
+            ReferenceTable = null;
+            ReferenceColumn = null;
+            IsNullable = false;
+            IsPrivateKey = false;
+            IsForeignKey = false;
+        }
 
         public void ParseColumn(string name, string nullable, string typeStr, int size)
         {
@@ -45,6 +59,11 @@ namespace BazaDanych
                 
             }
             MaxSize = size;
+        }
+
+        public void ParseConstraint()
+        {
+
         }
 
         public override string ToString()

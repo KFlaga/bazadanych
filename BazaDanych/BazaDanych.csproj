@@ -86,6 +86,9 @@
     <Compile Include="TableViewer.xaml.cs">
       <DependentUpon>TableViewer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewCreator.xaml.cs">
+      <DependentUpon>ViewCreator.xaml</DependentUpon>
+    </Compile>
     <Page Include="ConnectionSettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -107,6 +110,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="TableViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewCreator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
