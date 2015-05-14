@@ -136,8 +136,8 @@ namespace BazaDanych
 
         public TableSchema GetTablePrivileges(TableSchema schema)
         {
-            OracleCommand cmd = GetCommand("SELECT privilege FROM USER_TAB_PRIVS WHERE table_name='"+schema.Owner+"."+schema.Name+"'", null);
-            cmd.CommandTimeout = 5;
+            OracleCommand cmd = GetCommand("SELECT privilege FROM ALL_TAB_PRIVS WHERE table_name='"+schema.Name+"'", null);
+            cmd.CommandTimeout = 15;
             try
             {
                 OracleDataReader reader = cmd.ExecuteReader();
@@ -175,6 +175,59 @@ namespace BazaDanych
                 MessageBox.Show("Nie można pobrać tabel:\n" + ex.Message);
             }
             return tables;
+        }
+
+        public TableSchema GetTableForeignKeys(TableSchema schema)
+        {
+            OracleCommand cmd = GetCommand("SELECT detail_table.column_name, ref_Table.TABLE_NAME, ref_Table.column_name " +
+                                            "FROM all_constraints constraint_info, " +
+                                            "all_cons_columns detail_table, " +
+                                            "all_cons_columns ref_Table " +
+                                            "WHERE constraint_info.constraint_name = detail_table.constraint_name " +
+                                            "AND constraint_info.r_constraint_name = ref_Table.constraint_name " +
+                                            "AND detail_table.POSITION = ref_Table.POSITION " +
+                                            "AND constraint_info.constraint_type = 'R' " +
+                                            "AND detail_table.TABLE_NAME = '"+schema.Name+"'", null);
+            cmd.CommandTimeout = 15;
+            try
+            {
+                OracleDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    schema.ParseForeignKey(reader.GetString(0), reader.GetString(1), reader.GetString(2));
+                }
+            }
+            catch (OracleException ex)
+            {
+                MessageBox.Show("Błąd podczas pobierania obcych kluczy:\n" + ex.Message);
+            }
+            return schema;
+        }
+
+        public TableSchema GetValueConstraints(TableSchema schema)
+        {
+            OracleCommand cmd = GetCommand("SELECT detail_table.COLUMN_NAME, constraint_info.SEARCH_CONDITION_VC " +
+                                            "FROM all_constraints  constraint_info, "+
+                                            "all_cons_columns detail_table "+
+                                            "WHERE constraint_info.constraint_name = detail_table.constraint_name "+
+                                            "AND constraint_info.constraint_type = 'C' "+
+                                            "AND detail_table.TABLE_NAME = '"+schema.Name+"'", null);
+            cmd.CommandTimeout = 15;
+            try
+            {
+                OracleDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    if (reader.IsDBNull(0) || reader.IsDBNull(1))
+                        continue;
+                    schema.ParseConstraint(reader.GetString(0), reader.GetString(1));
+                }
+            }
+            catch (OracleException ex)
+            {
+                MessageBox.Show("Błąd podczas pobierania obcych kluczy:\n" + ex.Message);
+            }
+            return schema;
         }
     }
 }

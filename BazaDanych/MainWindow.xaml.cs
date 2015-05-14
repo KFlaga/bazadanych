@@ -92,9 +92,12 @@ namespace BazaDanych
                 {
                     dbConnector.GetTableSchema(mainTableSchemas[t]);
                     dbConnector.GetTablePrivileges(mainTableSchemas[t]);
-                    // if(tabSchema.CanSelect)
-                    addTableToView(mainTableSchemas[t]);
+                    dbConnector.GetTableForeignKeys(mainTableSchemas[t]);
+                    dbConnector.GetValueConstraints(mainTableSchemas[t]);
+                    if (mainTableSchemas[t].CanSelect)
+                        addTableToView(mainTableSchemas[t]);
                 }
+                ResolveForeignKeys();
             }
         }
 
@@ -143,6 +146,14 @@ namespace BazaDanych
             // Stwórz tabelę z podanymi kolumnami
 
             _tableView.ShowTable(LoadTable(tableSchema));
+        }
+
+        private void ResolveForeignKeys()
+        {
+            for (int t = 0; t < mainTableSchemas.Count; t++)
+            {
+                mainTableSchemas[t].ResolveForeignKeys(mainTableSchemas);
+            }
         }
 
         private void CreateView(object sender, RoutedEventArgs e)

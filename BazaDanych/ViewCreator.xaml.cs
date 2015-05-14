@@ -50,6 +50,9 @@ namespace BazaDanych
             else
             {
                 checkUseForeignKey.IsEnabled = false;
+                checkUseForeignKey.IsChecked = false;
+                tbRefTable.Text = "";
+                combRefColumn.ItemsSource = null;
             }
         }
 

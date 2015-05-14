@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BazaDanych
@@ -44,6 +45,43 @@ namespace BazaDanych
                 CanUpdate = true;
             else if (priv == "DELETE")
                 CanDelete = true;
+        }
+
+        internal void ParseForeignKey(string column, string refTab, string refCol)
+        {
+            for (int col = 0; col < Columns.Count; col++)
+            {
+                if (Columns[col].Name == column)
+                {
+                    Columns[col].SetForeignKey(refTab, refCol);
+                }
+            }
+        }
+
+        internal void ResolveForeignKeys(List<TableSchema> tableSchemas)
+        {
+            for (int col = 0; col < Columns.Count; col++)
+            {
+                if (Columns[col].IsForeignKey)
+                    Columns[col].ResolveForeignKey(tableSchemas);
+            }
+        }
+
+        internal void ParseConstraint(string column, string constraint)
+        {
+            if (Regex.IsMatch(constraint, ".* IN .*")) // odfiltrowanie NOT NULLi
+            {
+                Regex valsPat = new Regex("\\((.*)\\)");
+                if( valsPat.IsMatch(constraint))
+                {
+                    string vals = valsPat.Match(constraint).Groups[1].Value; // zostaje 'val1','val2','val3'
+                    for (int col = 0; col < Columns.Count; col++)
+                    {
+                        if (Columns[col].Name == column)
+                            Columns[col].SetValConstraints(vals);
+                    }       
+                }
+            }
         }
     }
 }
