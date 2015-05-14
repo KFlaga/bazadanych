@@ -20,9 +20,9 @@ namespace BazaDanych
     /// <summary>
     /// Interaction logic for TableViewer.xaml
     /// </summary>
-    public partial class TableViewer : UserControl
+    public partial class TableViewer : TabItem
     {
-        private Table tableSource;
+        public Table TableSource { get; private set; }
 
         public TableViewer()
         {
@@ -38,8 +38,9 @@ namespace BazaDanych
 
         public void ShowTable(Table table)
         {
-            tableSource = table;
+            TableSource = table;
             mainView.ItemsSource = table;
+            this.Header = table.TableSchema.Name;
             int count = 0;
             tableView.Columns.Clear();
             foreach (var col in table.Columns)
@@ -88,15 +89,12 @@ namespace BazaDanych
             ShowTable(table);
         }
 
-        public delegate void RecordDelegate(object sender, RecordEventArgs e);
-        public event RecordDelegate RecordReadyToInsert;
-
         private void butNewRecord_Click(object sender, RoutedEventArgs e)
         {
             // TEST ( tylko dla tablei MAGAZYNY )
             RecordEventArgs evt = new RecordEventArgs();
-            evt.Table = tableSource;
-            evt.EditedColummns = tableSource.Columns;
+            evt.Table = TableSource;
+            evt.EditedColummns = TableSource.Columns;
             object[] record = new object[3] { (int)5, "TestMiasto", "TestAdres"};
             evt.EditedRows = new List<object[]>();
             evt.EditedRows.Add(record);
@@ -104,5 +102,15 @@ namespace BazaDanych
             if (RecordReadyToInsert != null)
                 RecordReadyToInsert(this, evt);
         }
+
+        private void butCloseTab_Click(object sender, RoutedEventArgs e)
+        {
+            if (CloseTab != null)
+                CloseTab(this, e);
+        }
+
+        public delegate void RecordDelegate(object sender, RecordEventArgs e);
+        public event RecordDelegate RecordReadyToInsert;
+        public event RoutedEventHandler CloseTab;
     }
 }

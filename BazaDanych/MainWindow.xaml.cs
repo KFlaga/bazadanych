@@ -8,6 +8,7 @@ namespace BazaDanych
 {
     public partial class MainWindow : Window
     {
+        BindingList<TableViewer> cardsTableViews;
         List<TableSchema> mainTableSchemas;
 
         DatabaseConnector dbConnector;
@@ -18,6 +19,7 @@ namespace BazaDanych
         public MainWindow()
         {
             mainTableSchemas = new List<TableSchema>();
+            cardsTableViews = new BindingList<TableViewer>();
 
             InitializeComponent();
             this.Closing += (s, e) => { dbConnector.Disconnect(); };
@@ -29,6 +31,8 @@ namespace BazaDanych
 
             sqlBuilder = new SqlCommandBuilder();
             sqlInterpreter = new SqlResultInterpreter();
+
+            _tableViewSwitcher.ItemsSource = cardsTableViews;
         }
 
         private void onConnectToDatabaseClicked(object sender, RoutedEventArgs e)
@@ -66,19 +70,18 @@ namespace BazaDanych
 
         private void ConnectedToDatabase()
         {
+            _statusBarLabel.Content = "Połączono z bazą danych: ładowanie danych";
             RefreshTables(this, new RoutedEventArgs());
             _submenuConnect.IsEnabled = false;
             _submenuDisconnect.IsEnabled = true;
-
-            _tableView.RecordReadyToInsert += InsertRecords;
+            _statusBarLabel.Content = "Połączono z bazą danych";
         }
 
         private void DisconectedFromDatabase()
         {
             _submenuConnect.IsEnabled = true;
             _submenuDisconnect.IsEnabled = false;
-
-            _tableView.RecordReadyToInsert -= InsertRecords;
+            _statusBarLabel.Content = "Nie ma połączenia z bazą";
         }
 
         private void RefreshTables(object sender, RoutedEventArgs e)
@@ -129,23 +132,35 @@ namespace BazaDanych
             };
             tableItem.PreviewMouseDoubleClick += (sender, e) =>
             {
-                ShowTable(((ListBoxItem)sender).Content as TableSchema);
+                AddTableView_SwitchToCardIfAlreadyAdded(((ListBoxItem)sender).Content as TableSchema);
             };
             _tableList.Items.Add(tableItem);
         }
 
-        private void ShowTable(TableSchema tableSchema, List<ColumnSchema> columns = null)
+        private void AddTableView_SwitchToCardIfAlreadyAdded(TableSchema tableSchema)
         {
+            foreach (TableViewer viewer in cardsTableViews)
+            {
+                if ( viewer.TableSource.TableSchema == tableSchema )
+                {
+                    _tableViewSwitcher.SelectedItem = viewer;
+                    return;
+                }
+            }
+
             if (!dbConnector.Connected)
                 return;
 
-            if (columns == null)
-            {
-                columns = tableSchema.Columns;
-            }
-            // Stwórz tabelę z podanymi kolumnami
+            TableViewer tabView = new TableViewer();
+            tabView.ShowTable(LoadTable(tableSchema));
+            tabView.CloseTab += CloseTableViewer;
+            cardsTableViews.Add(tabView);
+            _tableViewSwitcher.SelectedItem = tabView;
+        }
 
-            _tableView.ShowTable(LoadTable(tableSchema));
+        void CloseTableViewer(object sender, RoutedEventArgs e)
+        {
+            cardsTableViews.Remove((TableViewer)sender);
         }
 
         private void ResolveForeignKeys()
@@ -171,6 +186,5 @@ namespace BazaDanych
                 creator.ShowDialog();
             }
         }
-
     }
 }

@@ -3,15 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:BazaDanych" x:Class="BazaDanych.MainWindow"
         Title="MainWindow" Height="600" Width="800" x:Name="mainWindow" ResizeMode="CanMinimize">
-    <Window.Resources>
-        <ContextMenu x:Key="tableContextMenu" x:Name="tableContextMenu">
-            <MenuItem Header="Odśwież"/>
-            <Separator/>
-            <MenuItem Header="Pokaż tabelę"/>
-            <MenuItem Header="Dodaj rekord"/>
-            <MenuItem Header="Szukaj rekordów"/>
-        </ContextMenu>
-    </Window.Resources>
+ 
     <DockPanel x:Name="_mainLayout">
         <Menu x:Name="_mainMenu" IsMainMenu="True" DockPanel.Dock="Top" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="1">
             <MenuItem x:Name="_menuConnect" Header="_Połączenie">
@@ -20,6 +12,9 @@
                 <MenuItem x:Name="_submenuConnectSettings" Header="Ustawienia połączenie" Click="onConnectionSettingsClicked"/>
             </MenuItem>
         </Menu>
+        <StatusBar x:Name="_statusBar" DockPanel.Dock="Bottom" Height="25" Background="LightGray" BorderThickness="1" BorderBrush="Black">
+            <Label x:Name="_statusBarLabel" HorizontalAlignment="Left" VerticalAlignment="Stretch" Padding="1"/>
+        </StatusBar>
         <Border x:Name="_borderTablesView" DockPanel.Dock="Left" Width="160" HorizontalAlignment="Left" BorderThickness="1" BorderBrush="Black">
             <Grid x:Name="_panelTablesView">
                 <Grid.RowDefinitions>
@@ -56,6 +51,15 @@
                 </DockPanel>
             </Grid>
         </Border>
-        <local:TableViewer x:Name="_tableView" DockPanel.Dock="Bottom"/>
+        <TabControl x:Name="_tableViewSwitcher" DockPanel.Dock="Bottom"/>
     </DockPanel>
+
+    <Window.Resources>
+        <ContextMenu x:Key="tableContextMenu" x:Name="tableContextMenu">
+            <MenuItem Header="Odśwież"/>
+            <Separator/>
+            <MenuItem Header="Pokaż tabelę w obecnej karcie"/>
+            <MenuItem Header="Pokaż tabelę w nowej karcie"/>
+        </ContextMenu>
+    </Window.Resources>
 </Window>

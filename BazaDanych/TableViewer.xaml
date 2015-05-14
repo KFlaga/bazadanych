@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="BazaDanych.TableViewer"
+﻿<TabItem x:Class="BazaDanych.TableViewer"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:BazaDanych"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="400">
-    <DockPanel>
+    <DockPanel MinHeight="100" MinWidth="100">
         <DockPanel x:Name="toolbar" Background="LightGray" DockPanel.Dock="Top" Height="30" LastChildFill="False">
             <Button x:Name="butNewRecord" Content="NEW" BorderBrush="Black" Margin="2" Click="butNewRecord_Click" IsEnabled="False"/>
             <Button x:Name="butEditRecord" Content="EDIT" BorderBrush="Black" Margin="2" IsEnabled="False"/>
@@ -23,4 +23,16 @@
         </ListView>
 
     </DockPanel>
-</UserControl>
+        <TabItem.HeaderTemplate>
+        <DataTemplate>
+            <StackPanel Orientation="Horizontal" >
+                <Label Content="{Binding}"/>
+                <Button x:Name="butCloseTab" Margin="3" Width="12" Height="12" Padding="0" 
+                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                                 BorderThickness="0" Background="Transparent" Click="butCloseTab_Click">
+                    <Path Fill="Black" Data="M 0,2 l 3,3 l -3,3 l 2,2 l 3,-3 l 3,3 l 2,-2 l -3,-3 l 3,-3 l -2,-2 l -3,3 l -3,-3 Z"/>
+                </Button>
+            </StackPanel>
+        </DataTemplate>
+    </TabItem.HeaderTemplate>
+</TabItem>
