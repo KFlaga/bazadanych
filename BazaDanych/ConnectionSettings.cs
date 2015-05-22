@@ -21,8 +21,8 @@ namespace BazaDanych
         {
             TNSName = "TESTKAMIL";
             Host = "localhost";
-            Port = "1522";
-            SID = "bazatest";
+            Port = "1521";
+            SID = "orcl2";
             AsAdmin = false;
             UseTNS = false;
         }

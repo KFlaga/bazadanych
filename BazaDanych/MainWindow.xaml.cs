@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -97,22 +98,23 @@ namespace BazaDanych
                     dbConnector.GetTablePrivileges(mainTableSchemas[t]);
                     dbConnector.GetTableForeignKeys(mainTableSchemas[t]);
                     dbConnector.GetValueConstraints(mainTableSchemas[t]);
-                    if (mainTableSchemas[t].CanSelect)
+                    //if (mainTableSchemas[t].CanSelect)
                         addTableToView(mainTableSchemas[t]);
                 }
                 ResolveForeignKeys();
             }
+            
         }
 
         void InsertRecords(object sender, RecordEventArgs e)
         {
             // TEST 
-            if (e.Table.TableSchema.Name != "MAGAZYNY")
-                return;
-
+            //if (e.Table.TableSchema.Name != "MAGAZYNY")
+              //  return;
+            var table_viewer = sender as TableViewer;
             string sql = sqlBuilder.InsertRecord(e.Table.TableSchema.Name, e.EditedColummns, e.EditedRows[0]);
-
             dbConnector.SendSqlNonQuerry(sql);
+            table_viewer.ShowTable(LoadTable(table_viewer.TableSource.TableSchema));
         }
 
         Table LoadTable(TableSchema schema)
@@ -152,10 +154,29 @@ namespace BazaDanych
                 return;
 
             TableViewer tabView = new TableViewer();
+            tabView.RecordReadyToInsert += InsertRecords;
+            tabView.RecordReadyToEdit += tabView_RecordReadyToEdit;
+            tabView.RecordReadyToDelete += tabView_RecordReadyToDelete;
             tabView.ShowTable(LoadTable(tableSchema));
             tabView.CloseTab += CloseTableViewer;
             cardsTableViews.Add(tabView);
             _tableViewSwitcher.SelectedItem = tabView;
+        }
+
+        void tabView_RecordReadyToDelete(object sender, RecordEventArgs e)
+        {
+            var table_viewer = sender as TableViewer;
+            string sql = sqlBuilder.DeleteRecord(e.Table.TableSchema.Name, e.EditedColummns, e.EditedRows[e.EditedIndex]);
+            dbConnector.SendSqlNonQuerry(sql);
+            table_viewer.ShowTable(LoadTable(table_viewer.TableSource.TableSchema));
+        }
+
+        void tabView_RecordReadyToEdit(object sender, RecordEventArgs e)
+        {
+            var table_viewer = sender as TableViewer;
+            string sql = sqlBuilder.EditRecord(e.Table.TableSchema.Name, e.EditedColummns, e.EditedRows[e.EditedIndex]);
+            dbConnector.SendSqlNonQuerry(sql);
+            table_viewer.ShowTable(LoadTable(table_viewer.TableSource.TableSchema));
         }
 
         void CloseTableViewer(object sender, RoutedEventArgs e)
@@ -185,6 +206,19 @@ namespace BazaDanych
                 ViewCreator creator = new ViewCreator(selectableTabs);
                 creator.ShowDialog();
             }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            //ColumnSchema cs1 = new ColumnSchema() { Name = "cos", type = Type.GetType("System.String") };
+            //ColumnSchema cs2 = new ColumnSchema() { Name = "cos_dluzszego", type = Type.GetType("System.String") };
+            //ColumnSchema cs3 = new ColumnSchema() { Name = "cos-num", type = Type.GetType("System.Int32") };
+            //List<ColumnSchema> css = new List<ColumnSchema>();
+            //css.Add(cs1);
+            //css.Add(cs2);
+            //css.Add(cs3);
+            //AddRecordDialog adr = new AddRecordDialog(css);
+            //adr.Show();
         }
     }
 }

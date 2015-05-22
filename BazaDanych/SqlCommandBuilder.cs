@@ -32,6 +32,46 @@ namespace BazaDanych
             return sql.ToString();
         }
 
+        public string BuildUpdateStatement(string tableName, string[] columns, string[] vals)
+        {
+            StringBuilder sql = new StringBuilder();
+
+            sql.Append("UPDATE ");
+            sql.Append(tableName);
+            sql.Append(" SET ");
+            for (int i = 0; i < columns.Length; i++)
+            {
+                sql.Append(String.Format("{0}='{1}',", columns[i], vals[i]));
+            }
+            sql.Remove(sql.Length - 1, 1);
+            sql.Append(" WHERE ");
+            for (int i = 0; i < columns.Length; i++)
+            {
+                if (columns[i] == "ID")
+                {
+                    sql.Append(String.Format("{0} = '{1}'", columns[i], vals[i]));
+                }
+            }
+            return sql.ToString();
+        }
+
+        public string BuildDeleteStatement(string tableName, string[] columns, string[] vals)
+        {
+            StringBuilder sql = new StringBuilder();
+
+            sql.Append("DELETE FROM ");
+            sql.Append(tableName);
+            sql.Append(" WHERE ");
+            for (int i = 0; i < columns.Length; i++)
+            {
+                if (columns[i] == "ID")
+                {
+                    sql.Append(String.Format("{0} = '{1}'", columns[i], vals[i]));
+                }
+            }
+            return sql.ToString();
+        }
+
         public string InsertRecord(string tableName, List<ColumnSchema> columns, object[] vals)
         {
             List<string> cols = new List<string>();
@@ -47,6 +87,40 @@ namespace BazaDanych
             }
 
             return BuildInsertStatement(tableName, cols.ToArray(), row);
+        }
+
+        public string EditRecord(string tableName, List<ColumnSchema> columns, object[] vals)
+        {
+            List<string> cols = new List<string>();
+            foreach (ColumnSchema col in columns)
+            {
+                cols.Add(col.Name);
+            }
+
+            string[] row = new string[vals.Length];
+            for (int v = 0; v < vals.Length; v++)
+            {
+                row[v] = vals[v].ToString();
+            }
+
+            return BuildUpdateStatement(tableName, cols.ToArray(), row);
+        }
+
+        public string DeleteRecord(string tableName, List<ColumnSchema> columns, object[] vals)
+        {
+            List<string> cols = new List<string>();
+            foreach (ColumnSchema col in columns)
+            {
+                cols.Add(col.Name);
+            }
+
+            string[] row = new string[vals.Length];
+            for (int v = 0; v < vals.Length; v++)
+            {
+                row[v] = vals[v].ToString();
+            }
+
+            return BuildDeleteStatement(tableName, cols.ToArray(), row);
         }
 
         public string BuildSelectStatement(string from, string[] columns, string condition = "", string addon = "")

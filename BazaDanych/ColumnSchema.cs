@@ -9,8 +9,8 @@ namespace BazaDanych
 {
     public class ColumnSchema
     {
-        public string Name { get; private set; }
-        public Type type { get; private set; }
+        public string Name { get; set; }//private set; }
+        public Type type { get; set; }//private set; }
         public int MaxSize { get; private set; }
         public bool IsNullable { get; private set; }
         public bool IsPrivateKey { get; private set; }

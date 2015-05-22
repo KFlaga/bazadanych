@@ -22,7 +22,7 @@ namespace BazaDanych
     /// </summary>
     public partial class TableViewer : TabItem
     {
-        public Table TableSource { get; private set; }
+        public Table TableSource { get; set; }//private set; }
 
         public TableViewer()
         {
@@ -54,7 +54,7 @@ namespace BazaDanych
                     });
                 count++;
             }
-           // if (table.TableSchema.CanInsert)
+            if (table.TableSchema.CanInsert)
                 butNewRecord.IsEnabled = true;
            // else if (table.TableSchema.CanUpdate)
                 butEditRecord.IsEnabled = true;
@@ -91,16 +91,49 @@ namespace BazaDanych
 
         private void butNewRecord_Click(object sender, RoutedEventArgs e)
         {
-            // TEST ( tylko dla tablei MAGAZYNY )
             RecordEventArgs evt = new RecordEventArgs();
             evt.Table = TableSource;
             evt.EditedColummns = TableSource.Columns;
-            object[] record = new object[3] { (int)5, "TestMiasto", "TestAdres"};
-            evt.EditedRows = new List<object[]>();
-            evt.EditedRows.Add(record);
+            RecordDialog adr = new RecordDialog(evt);
+            adr.Closed += adr_Closed;
+            adr.ShowDialog();
 
-            if (RecordReadyToInsert != null)
-                RecordReadyToInsert(this, evt);
+
+            //object[] record = new object[3] { (int)5, "TestMiasto", "TestAdres"};
+            //evt.EditedRows = new List<object[]>();
+            //evt.EditedRows.Add(record);
+
+            //if (RecordReadyToInsert != null)
+            //    RecordReadyToInsert(this, evt);
+        }
+
+        private void butEditRecord_Click(object sender, RoutedEventArgs e)
+        {
+            RecordEventArgs evt = new RecordEventArgs();
+            evt.Table = TableSource;
+            evt.EditedColummns = TableSource.Columns;
+            evt.EditedRows = TableSource.Rows;
+            evt.EditedIndex = mainView.SelectedIndex;
+            RecordDialog rd = new RecordDialog(evt, true);
+            rd.Closed += adr_Closed;
+            rd.ShowDialog();
+        }
+
+        void adr_Closed(object sender, EventArgs e)
+        {
+            var adr = sender as RecordDialog;
+            if (adr.IsEdited )
+            {
+                if (RecordReadyToInsert != null && !adr.BeingEdited)
+                    RecordReadyToInsert(this, adr.REvArgs);
+                else if (RecordReadyToEdit != null && adr.BeingEdited)
+                    RecordReadyToEdit(this, adr.REvArgs);
+            }
+            //{
+            //    SqlCommandBuilder sql = new SqlCommandBuilder();
+            //    String sql_rec = sql.InsertRecord(adr.REvArgs.Table.TableSchema.Name, adr.REvArgs.EditedColummns, adr.REvArgs.EditedRows[0]);
+            //    var db = new DatabaseConnector();
+            //    db.SendSqlQuerry(sql_rec);
         }
 
         private void butCloseTab_Click(object sender, RoutedEventArgs e)
@@ -111,6 +144,19 @@ namespace BazaDanych
 
         public delegate void RecordDelegate(object sender, RecordEventArgs e);
         public event RecordDelegate RecordReadyToInsert;
+        public event RecordDelegate RecordReadyToEdit;
+        public event RecordDelegate RecordReadyToDelete;
         public event RoutedEventHandler CloseTab;
+
+        private void butDeleteRecord_Click(object sender, RoutedEventArgs e)
+        {
+            var evt = new RecordEventArgs();
+            evt.Table = TableSource;
+            evt.EditedColummns = TableSource.Columns;
+            evt.EditedRows = TableSource.Rows;
+            evt.EditedIndex = mainView.SelectedIndex;
+            if (RecordReadyToDelete != null)
+                RecordReadyToDelete(this, evt);
+        }
     }
 }

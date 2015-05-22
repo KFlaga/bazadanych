@@ -126,6 +126,8 @@ namespace BazaDanych
                     column.ParseColumn(reader.GetString(0), reader.GetString(3), reader.GetString(1), reader.GetInt32(2));
                     tabSchema.Columns.Insert(0, column);
                 }
+                if (tabSchema.Columns[0].Name != "ID")
+                    tabSchema.Columns.Reverse();
             }
             catch (OracleException ex)
             {
@@ -153,7 +155,7 @@ namespace BazaDanych
             return schema;
         }
 
-        public List<TableSchema> GetTableNames(string tablespace = "USER")
+        public List<TableSchema> GetTableNames(string tablespace = "USERS")
         {
             OracleCommand cmd = GetCommand("select table_name, owner from ALL_TABLES where tablespace_name='"+tablespace+"'", null);
             cmd.CommandTimeout = 5;

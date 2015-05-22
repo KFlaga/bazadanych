@@ -10,5 +10,6 @@ namespace BazaDanych
         public Table Table { get; set; }
         public List<ColumnSchema> EditedColummns { get; set; }
         public List<object[]> EditedRows { get; set; }
+        public int EditedIndex { get; set; }
     }
 }

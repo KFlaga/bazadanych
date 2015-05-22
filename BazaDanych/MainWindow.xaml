@@ -11,6 +11,7 @@
                 <MenuItem x:Name="_submenuDisconnect" Header="Rozłącz" IsEnabled="False" Click="onDisconnectFromDatabaseClicked"/>
                 <MenuItem x:Name="_submenuConnectSettings" Header="Ustawienia połączenie" Click="onConnectionSettingsClicked"/>
             </MenuItem>
+            <MenuItem Header="MenuItem" Click="MenuItem_Click"/>
         </Menu>
         <StatusBar x:Name="_statusBar" DockPanel.Dock="Bottom" Height="25" Background="LightGray" BorderThickness="1" BorderBrush="Black">
             <Label x:Name="_statusBarLabel" HorizontalAlignment="Left" VerticalAlignment="Stretch" Padding="1"/>
