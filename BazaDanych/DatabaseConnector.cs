@@ -231,5 +231,25 @@ namespace BazaDanych
             }
             return schema;
         }
+
+        public void GetUserList(Users.UserList userList)
+        {
+            OracleCommand cmd = GetCommand("SELECT * FROM SYS.UZYTKOWNICY");
+            cmd.CommandTimeout = 5;
+            try
+            {
+                OracleDataReader reader = cmd.ExecuteReader();
+                while(reader.Read())
+                {
+                    if (reader.IsDBNull(0) || reader.IsDBNull(1))
+                        continue;
+                    userList.ParseUser(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3));
+                }
+            }
+            catch (OracleException ex)
+            {
+                MessageBox.Show("Błąd pobierania użytkowników:\n " + ex.Message);
+            }
+        }
     }
 }

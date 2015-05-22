@@ -70,6 +70,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AccessDialog.xaml.cs">
+      <DependentUpon>AccessDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\Record\RecordDialog.xaml.cs">
       <DependentUpon>RecordDialog.xaml</DependentUpon>
     </Compile>
@@ -91,9 +94,15 @@
     <Compile Include="TableViewer.xaml.cs">
       <DependentUpon>TableViewer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Users\User.cs" />
+    <Compile Include="Users\UserList.cs" />
     <Compile Include="ViewCreator.xaml.cs">
       <DependentUpon>ViewCreator.xaml</DependentUpon>
     </Compile>
+    <Page Include="AccessDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\Record\RecordDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
