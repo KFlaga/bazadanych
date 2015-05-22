@@ -223,6 +223,14 @@ namespace BazaDanych
                     REvArgs.EditedRows[0][i] = no;
                 }
             }
+            foreach (var row in REvArgs.EditedRows[0])
+            {
+                if (row == null)
+                {
+                    MessageBox.Show("Nie uzupełniono wszystkich pól!");
+                    return;
+                }
+            }
             IsEdited = true;
             this.Close();
         }

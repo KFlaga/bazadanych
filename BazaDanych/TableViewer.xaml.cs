@@ -107,6 +107,17 @@ namespace BazaDanych
             //    RecordReadyToInsert(this, evt);
         }
 
+        private void butDeleteRecord_Click(object sender, RoutedEventArgs e)
+        {
+            var evt = new RecordEventArgs();
+            evt.Table = TableSource;
+            evt.EditedColummns = TableSource.Columns;
+            evt.EditedRows = TableSource.Rows;
+            evt.EditedIndex = mainView.SelectedIndex;
+            if (RecordReadyToDelete != null)
+                RecordReadyToDelete(this, evt);
+        }
+
         private void butEditRecord_Click(object sender, RoutedEventArgs e)
         {
             RecordEventArgs evt = new RecordEventArgs();
@@ -148,15 +159,6 @@ namespace BazaDanych
         public event RecordDelegate RecordReadyToDelete;
         public event RoutedEventHandler CloseTab;
 
-        private void butDeleteRecord_Click(object sender, RoutedEventArgs e)
-        {
-            var evt = new RecordEventArgs();
-            evt.Table = TableSource;
-            evt.EditedColummns = TableSource.Columns;
-            evt.EditedRows = TableSource.Rows;
-            evt.EditedIndex = mainView.SelectedIndex;
-            if (RecordReadyToDelete != null)
-                RecordReadyToDelete(this, evt);
-        }
+
     }
 }

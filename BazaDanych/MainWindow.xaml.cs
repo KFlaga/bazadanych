@@ -106,16 +106,7 @@ namespace BazaDanych
             
         }
 
-        void InsertRecords(object sender, RecordEventArgs e)
-        {
-            // TEST 
-            //if (e.Table.TableSchema.Name != "MAGAZYNY")
-              //  return;
-            var table_viewer = sender as TableViewer;
-            string sql = sqlBuilder.InsertRecord(e.Table.TableSchema.Name, e.EditedColummns, e.EditedRows[0]);
-            dbConnector.SendSqlNonQuerry(sql);
-            table_viewer.ShowTable(LoadTable(table_viewer.TableSource.TableSchema));
-        }
+
 
         Table LoadTable(TableSchema schema)
         {
@@ -163,6 +154,25 @@ namespace BazaDanych
             _tableViewSwitcher.SelectedItem = tabView;
         }
 
+        void InsertRecords(object sender, RecordEventArgs e)
+        {
+            // TEST 
+            //if (e.Table.TableSchema.Name != "MAGAZYNY")
+            //  return;
+            var table_viewer = sender as TableViewer;
+            string sql = "";
+            try
+            {
+                sql = sqlBuilder.InsertRecord(e.Table.TableSchema.Name, e.EditedColummns, e.EditedRows[0]);
+            } catch (ArgumentOutOfRangeException ex)
+            {
+                MessageBox.Show("Argument z poza dostępnego zakresu " + (ex.GetBaseException()).ToString());
+                return;
+            }
+            dbConnector.SendSqlNonQuerry(sql);
+            table_viewer.ShowTable(LoadTable(table_viewer.TableSource.TableSchema));
+        }
+
         void tabView_RecordReadyToDelete(object sender, RecordEventArgs e)
         {
             var table_viewer = sender as TableViewer;
@@ -174,7 +184,15 @@ namespace BazaDanych
         void tabView_RecordReadyToEdit(object sender, RecordEventArgs e)
         {
             var table_viewer = sender as TableViewer;
-            string sql = sqlBuilder.EditRecord(e.Table.TableSchema.Name, e.EditedColummns, e.EditedRows[e.EditedIndex]);
+            string sql = "";
+            try
+            {
+                sql = sqlBuilder.EditRecord(e.Table.TableSchema.Name, e.EditedColummns, e.EditedRows[e.EditedIndex]);
+            } catch (ArgumentOutOfRangeException ex)
+            {
+                MessageBox.Show("Argument z poza dostępnego zakresu " + (ex.GetBaseException()).ToString());
+                return;
+            }
             dbConnector.SendSqlNonQuerry(sql);
             table_viewer.ShowTable(LoadTable(table_viewer.TableSource.TableSchema));
         }
