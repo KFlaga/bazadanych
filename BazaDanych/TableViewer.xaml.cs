@@ -23,6 +23,7 @@ namespace BazaDanych
     public partial class TableViewer : TabItem
     {
         bool showToolbar = true;
+        private TableSorter sorter;
         public Table TableSource { get; set; }
         public bool ShowEditButtons 
         {
@@ -44,14 +45,13 @@ namespace BazaDanych
         public TableViewer()
         {
             InitializeComponent();
-
-           // test();
         }
 
         public void ShowTable(Table table)
         {
             TableSource = table;
-            mainView.ItemsSource = table;
+            sorter = new TableSorter(table);
+            mainView.ItemsSource = TableSource;
             this.Header = table.TableSchema.Name;
             int count = 0;
             tableView.Columns.Clear();
@@ -66,6 +66,7 @@ namespace BazaDanych
                     });
                 count++;
             }
+            
             if (table.TableSchema.CanInsert)
                 butNewRecord.IsEnabled = true;
             else if (table.TableSchema.CanUpdate)
@@ -77,12 +78,37 @@ namespace BazaDanych
                 {
                     this.RaiseEvent(e);
                 };
+            Update();
         }
 
         public void Update()
         {
             ICollectionView view = CollectionViewSource.GetDefaultView(mainView.ItemsSource);
             view.Refresh();
+        }
+
+        private void SortTable(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource.GetType() != typeof(GridViewColumnHeader))
+                return;
+            ColumnSchema column = null;
+            foreach(var col in TableSource.Columns)
+            {
+                if(col.Name == (string)((GridViewColumnHeader)e.OriginalSource).Column.Header)
+                {
+                    column = col;
+                    break;
+                }
+            }
+            if (sorter.LastSortColumn.Name == column.Name)
+            {
+                sorter.SortByColumn(column, !sorter.IsSortedAscending);
+            }
+            else
+            {
+                sorter.SortByColumn(column, true);
+            }
+            Update();
         }
         
         private void butNewRecord_Click(object sender, RoutedEventArgs e)
@@ -154,7 +180,5 @@ namespace BazaDanych
         public event RecordDelegate RecordReadyToEdit;
         public event RecordDelegate RecordReadyToDelete;
         public event RoutedEventHandler CloseTab;
-
-
     }
 }

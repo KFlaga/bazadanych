@@ -13,9 +13,9 @@
             <Button x:Name="butDeleteRecord" Content="DELETE" BorderBrush="Black" Margin="2" Click="butDeleteRecord_Click" IsEnabled="False"/>
             <Button Content="FILTER" BorderBrush="Black" Margin="2"/>
         </DockPanel>
-        <ListView x:Name="mainView" DockPanel.Dock="Bottom">
-            
-            <ListView.View>
+        <ListView x:Name="mainView" DockPanel.Dock="Bottom" GridViewColumnHeader.Click="SortTable">
+
+            <ListView.View >
                 <GridView x:Name="tableView" AllowsColumnReorder="True">
                     <GridViewColumn Header="test1" Width="100"/>
                 </GridView>
