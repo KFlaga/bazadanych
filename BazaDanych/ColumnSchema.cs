@@ -9,16 +9,16 @@ namespace BazaDanych
 {
     public class ColumnSchema
     {
-        public string Name { get; set; }//private set; }
-        public Type type { get; set; }//private set; }
-        public int MaxSize { get; private set; }
-        public bool IsNullable { get; private set; }
-        public bool IsPrivateKey { get; private set; }
-        public bool IsForeignKey { get; private set; }
+        public string Name { get; set; }
+        public Type type { get; set; }
+        public int MaxSize { get; set; }
+        public bool IsNullable { get; set; }
+        public bool IsPrivateKey { get; set; }
+        public bool IsForeignKey { get; set; }
         public TableSchema ReferenceTable { get; set; }
         public ColumnSchema ReferenceColumn { get; set; }
         public object DefaultValue { get; set; }
-        public List<object> ValueConstraints { get; private set; }
+        public List<object> ValueConstraints { get; set; }
 
         string referenceTableName;
         string referenceColumnName;
@@ -61,7 +61,7 @@ namespace BazaDanych
             }
             else if (typeStr.StartsWith("DATE"))
             {
-                
+                type = Type.GetType("System.DateTime");
             }
             MaxSize = size;
         }

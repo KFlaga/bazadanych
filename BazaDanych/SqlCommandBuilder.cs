@@ -41,7 +41,7 @@ namespace BazaDanych
             sql.Append(" SET ");
             for (int i = 0; i < columns.Length; i++)
             {
-                sql.Append(String.Format("{0}='{1}',", columns[i], vals[i]));
+                sql.Append(String.Format("{0}={1},", columns[i], vals[i]));
             }
             sql.Remove(sql.Length - 1, 1);
             sql.Append(" WHERE ");
@@ -49,7 +49,7 @@ namespace BazaDanych
             {
                 if (columns[i] == "ID")
                 {
-                    sql.Append(String.Format("{0} = '{1}'", columns[i], vals[i]));
+                    sql.Append(String.Format("{0} = {1}", columns[i], vals[i]));
                 }
             }
             return sql.ToString();
@@ -66,7 +66,7 @@ namespace BazaDanych
             {
                 if (columns[i] == "ID")
                 {
-                    sql.Append(String.Format("{0} = '{1}'", columns[i], vals[i]));
+                    sql.Append(String.Format("{0} = {1}", columns[i], vals[i]));
                 }
             }
             return sql.ToString();
@@ -100,7 +100,14 @@ namespace BazaDanych
             string[] row = new string[vals.Length];
             for (int v = 0; v < vals.Length; v++)
             {
-                row[v] = vals[v].ToString();
+                if (vals[v] == null)
+                    row[v] = "NULL";
+                else if (columns[v].type == Type.GetType("System.String"))
+                    row[v] = "'" + vals[v].ToString() + "'";
+                else if (columns[v].type == Type.GetType("System.DateTime"))
+                    row[v] = "TO_DATE('"+((DateOnly)vals[v]).ToString()+"','dd-mm-yy')";
+                else
+                    row[v] = vals[v].ToString();
             }
 
             return BuildUpdateStatement(tableName, cols.ToArray(), row);

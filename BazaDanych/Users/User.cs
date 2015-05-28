@@ -12,13 +12,15 @@ namespace BazaDanych
         public String Login { get; private set; }
         private String __passwd;
         public int Type { get; private set; }
+        public int EmplId { get; private set; }
 
-        public User(int id, String login, string passwd, int type)
+        public User(int id, String login, string passwd, int type, int emplId)
         {
             Id = id;
             Login = login;
             __passwd = passwd;
             Type = type;
+            EmplId = emplId;
         }
 
         public Boolean IsPasswdValid(String passwd)

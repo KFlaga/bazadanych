@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace BazaDanych
 {
-    class DatabaseConnector
+    public class DatabaseConnector
     {
         OracleConnection connection;
         public bool Connected
@@ -82,7 +82,7 @@ namespace BazaDanych
         public void SendSqlNonQuerry(string sql, string[] sqlParams = null) // Polecenie bez zwrotu
         {
             OracleCommand cmd = GetCommand(sql,sqlParams);
-            cmd.CommandTimeout = 5;
+            cmd.CommandTimeout = 35;
 
             try
             {
@@ -243,7 +243,7 @@ namespace BazaDanych
                 {
                     if (reader.IsDBNull(0) || reader.IsDBNull(1))
                         continue;
-                    userList.ParseUser(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3));
+                    userList.ParseUser(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3), reader.GetInt32(4));
                 }
             }
             catch (OracleException ex)

@@ -23,6 +23,18 @@ namespace BazaDanych
                 {
                     if (reader.IsDBNull(col))
                         vals[col] = null;
+                    else if (tabSchema.Columns[col].type == Type.GetType("System.String"))
+                        vals[col] = reader.GetString(col);
+                    else if (tabSchema.Columns[col].type == Type.GetType("System.Int32"))
+                        vals[col] = reader.GetInt32(col);
+                    else if (tabSchema.Columns[col].type == Type.GetType("System.Int16"))
+                        vals[col] = reader.GetInt16(col);
+                    else if (tabSchema.Columns[col].type == Type.GetType("System.DateTime"))
+                    {
+                        DateOnly date = new DateOnly();
+                        date.Date = reader.GetDateTime(col);
+                        vals[col] = date;
+                    }
                     else
                         vals[col] = reader.GetValue(col);
                 }
@@ -30,6 +42,24 @@ namespace BazaDanych
             }
 
             return table;
+        }
+
+        public object InterpretSingleSelection(OracleDataReader reader, string type = "object")
+        {
+            if (reader == null)
+                return null;
+
+            if (reader.Read() && !reader.IsDBNull(0))
+            {
+                if (type == "int")
+                    return reader.GetInt32(0);
+                else
+                    return reader.GetValue(0);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

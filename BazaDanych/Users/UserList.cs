@@ -14,9 +14,9 @@ namespace BazaDanych.Users
             __users = new List<User>();
         }
 
-        public void ParseUser(int id, string login, string passwd, int type)
+        public void ParseUser(int id, string login, string passwd, int type, int emplId)
         {
-            User user = new User(id, login, passwd, type);
+            User user = new User(id, login, passwd, type, emplId);
             __users.Add(user);
             Console.WriteLine(user);
         }

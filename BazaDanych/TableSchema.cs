@@ -83,5 +83,15 @@ namespace BazaDanych
                 }
             }
         }
+
+        public ColumnSchema FindColumn(string name)
+        {
+            foreach (ColumnSchema column in Columns)
+            {
+                if (column.Name.Equals(name,StringComparison.OrdinalIgnoreCase))
+                    return column;
+            }
+            return null;
+        }
     }
 }

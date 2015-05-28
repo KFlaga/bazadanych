@@ -23,6 +23,7 @@ namespace BazaDanych
         private String __loginServerPasswd = "passwd1";
         private ConnectionSettings __connSettings;
         private Users.UserList __userList;
+        private DatabaseConnector __dbc;
 
         public AccessDialog()
         {
@@ -32,14 +33,19 @@ namespace BazaDanych
             __connSettings.SetDefault();
             __connSettings.Login = __loginServerUser;
             __connSettings.Password = __loginServerPasswd;
+            __dbc = new DatabaseConnector();
             GetUsers();
         }
 
         private void GetUsers()
         {
-            DatabaseConnector dbc = new DatabaseConnector();
-            dbc.ConnectToDatabase(__connSettings);
-            dbc.GetUserList(__userList);
+            __dbc.ConnectToDatabase(__connSettings);
+            if (__dbc.Connected == false)
+            {
+                this.Close();
+                return;
+            }
+            __dbc.GetUserList(__userList);
         }
 
         private void btnReset_Click(object sender, RoutedEventArgs e)
@@ -57,9 +63,10 @@ namespace BazaDanych
                 return;
             }
             this.Hide();
-            if (u.Type == 0)
+            if (u.Type == 0) // admin
                 OpenAdminWindow();
-
+            else if (u.Type == 1) // dostawca
+                OpenCourierWindow(u);
 
             this.Close();
         }
@@ -67,7 +74,13 @@ namespace BazaDanych
         private void OpenAdminWindow()
         {
             MainWindow mainWindow = new MainWindow();
-            mainWindow.ShowDialog();
+            mainWindow.Show();
+        }
+
+        private void OpenCourierWindow(User u)
+        {
+            CourierWindow courierWindow = new CourierWindow(__dbc, __connSettings, u);
+            courierWindow.Show();
         }
     }
 }

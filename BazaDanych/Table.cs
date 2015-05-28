@@ -36,10 +36,19 @@ namespace BazaDanych
         {
             for(int col= 0; col < Rows[idx].Length; col++)
             {
-                if (Columns[idx].Name == colName)
+                if (Columns[col].Name.Equals(colName,StringComparison.OrdinalIgnoreCase))
                     return Rows[idx][col];
             }
             return null;
+        }
+
+        public void SetColumnData(int idx, string colName, object value)
+        {
+            for (int col = 0; col < Rows[idx].Length; col++)
+            {
+                if (Columns[col].Name.Equals(colName, StringComparison.OrdinalIgnoreCase))
+                    Rows[idx][col] = value;
+            }
         }
     }
 }

@@ -22,18 +22,30 @@ namespace BazaDanych
     /// </summary>
     public partial class TableViewer : TabItem
     {
-        public Table TableSource { get; set; }//private set; }
+        bool showToolbar = true;
+        public Table TableSource { get; set; }
+        public bool ShowEditButtons 
+        {
+            get
+            {
+                return showToolbar;
+            }
+            set
+            {
+                showToolbar = value;
+                if (value == true)
+                    toolbar.Height = 30;
+                else
+                    toolbar.Height = 0;
+            }
+        }
+        public int SelectedRow { get { return mainView.SelectedIndex; } }
 
         public TableViewer()
         {
             InitializeComponent();
 
-            test();
-        }
-
-        public string GetRecord()
-        {
-            return "TEST";
+           // test();
         }
 
         public void ShowTable(Table table)
@@ -50,45 +62,29 @@ namespace BazaDanych
                     {
                         Header = col.Name,
                         DisplayMemberBinding = new Binding(string.Format("[{0}]", count)),
-                        Width = 70
+                        Width = col.Name.Length*10
                     });
                 count++;
             }
             if (table.TableSchema.CanInsert)
                 butNewRecord.IsEnabled = true;
-           // else if (table.TableSchema.CanUpdate)
+            else if (table.TableSchema.CanUpdate)
                 butEditRecord.IsEnabled = true;
-           // else if (table.TableSchema.CanDelete)
+            else if (table.TableSchema.CanDelete)
                 butDeleteRecord.IsEnabled = true;
+            mainView.SelectionMode = SelectionMode.Single;
+            mainView.PreviewMouseDoubleClick += (s, e) =>
+                {
+                    this.RaiseEvent(e);
+                };
         }
 
-        private void test()
+        public void Update()
         {
-            ColumnSchema col1 = new ColumnSchema();
-            col1.ParseColumn("TEST1", "N", "VARCHAR", 32);
-            ColumnSchema col2 = new ColumnSchema();
-            col2.ParseColumn("TEST2", "N", "NUMBER", 32);
-
-            TableSchema tab = new TableSchema();
-            tab.Name = "TAB";
-            tab.Columns.Add(col1);
-            tab.Columns.Add(col2);
-
-            Table table = new Table(tab);
-
-            string rec11 = "TEST";
-            int rec12 = 10;
-            object[] rec1 = new object[] { rec11, rec12 };
-            string rec21 = "TEST2";
-            int rec22 = 20;
-            object[] rec2 = new object[] { rec21, rec22 };
-
-            table.Rows.Add(rec1);
-            table.Rows.Add(rec2);
-
-            ShowTable(table);
+            ICollectionView view = CollectionViewSource.GetDefaultView(mainView.ItemsSource);
+            view.Refresh();
         }
-
+        
         private void butNewRecord_Click(object sender, RoutedEventArgs e)
         {
             RecordEventArgs evt = new RecordEventArgs();
