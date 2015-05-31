@@ -1,0 +1,8 @@
+﻿<Window x:Class="BazaDanych.RecordDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="AddRecordDialog" Height="400" Width="248">
+    <Grid x:Name="panel1" HorizontalAlignment="Center" VerticalAlignment="Top">
+        <Grid x:Name="grid1" HorizontalAlignment="Left" Height="360" Margin="-110,6,-115,-366" VerticalAlignment="Top" Width="225"/>
+    </Grid>
+</Window>

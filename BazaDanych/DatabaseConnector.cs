@@ -243,7 +243,14 @@ namespace BazaDanych
                 {
                     if (reader.IsDBNull(0) || reader.IsDBNull(1))
                         continue;
-                    userList.ParseUser(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3), reader.GetInt32(4));
+                    int uId = reader.GetInt32(0);
+                    String uName = reader.GetString(1);
+                    String uPasswd = reader.GetString(2);
+                    int uType = reader.GetInt32(3);
+                    int uEmplId = -1;
+                    if (reader[4] != DBNull.Value)
+                        uEmplId = reader.GetInt32(4);
+                    userList.ParseUser(uId, uName, uPasswd, uType, uEmplId);
                 }
             }
             catch (OracleException ex)

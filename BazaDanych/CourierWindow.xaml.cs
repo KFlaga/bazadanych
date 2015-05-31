@@ -100,6 +100,11 @@ namespace BazaDanych
         private void ShowTable_AllPackages(object sender, RoutedEventArgs e)
         {
             tabAllCourierPackages.Rows.Clear();
+            if (tabPackages == null)
+            {
+                MessageBox.Show("Brak paczek do pokazania!");
+                return;
+            }
             for (int row = 0; row < tabPackages.Rows.Count; row++ )
             {
                 object[] package = new object[tabAllCourierPackages.TableSchema.Columns.Count];
@@ -137,6 +142,11 @@ namespace BazaDanych
         private void ShowTable_SpecificStatus(string status, Table table, List<int> ids)
         {
             table.Rows.Clear();
+            if (tabPackages == null)
+            {
+                MessageBox.Show("Brak paczek do pokazania!");
+                return;
+            }
             for (int row = 0; row < tabPackages.Rows.Count; row++)
             {
                 if (!((string)tabPackages.FindColumnData(row, "Status")).Equals(status, StringComparison.OrdinalIgnoreCase))

@@ -79,7 +79,14 @@ namespace BazaDanych
 
         private void OpenCourierWindow(User u)
         {
-            CourierWindow courierWindow = new CourierWindow(__dbc, __connSettings, u);
+            ConnectionSettings connSettings = new ConnectionSettings();
+            connSettings.SetDefault();
+            connSettings.Login = "sys";
+            connSettings.Password = "db123";
+            connSettings.AsAdmin = true;
+            DatabaseConnector dbc = new DatabaseConnector();
+            dbc.ConnectToDatabase(connSettings);
+            CourierWindow courierWindow = new CourierWindow(dbc, connSettings, u);
             courierWindow.Show();
         }
     }
