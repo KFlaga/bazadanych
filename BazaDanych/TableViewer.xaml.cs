@@ -22,7 +22,7 @@ namespace BazaDanych
     /// </summary>
     public partial class TableViewer : TabItem
     {
-        private List<String> packageStatus = new List<string> { "Anulowano", "Zlecona przez klienta", "W drodze do magazynu", "W drodze do odbiorcy", "Odebrana" };
+        public static readonly List<String> packageStatus = new List<string> { "Anulowano", "Zlecona przez klienta", "W drodze do magazynu", "W drodze do odbiorcy", "Odebrana" };
         bool showToolbar = true;
         private TableSorter sorter;
         public Table TableSource { get; set; }

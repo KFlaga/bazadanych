@@ -302,7 +302,18 @@ namespace BazaDanych
                 {
                     if (tab.Rows[i][0] == tabPackages.Rows[j][0])
                     {
-                        tabPackages.SetColumnData(j, "Status", tab.FindColumnData(i, "Status").ToString());
+                        if (tabPackages.FindColumnData(j, "Status") != tab.FindColumnData(i, "Status"))
+                        {
+                            if (TableViewer.packageStatus.IndexOf(tabPackages.FindColumnData(j, "Status").ToString())
+                                < TableViewer.packageStatus.IndexOf(tab.FindColumnData(i, "Status").ToString()) &&
+                                tab.FindColumnData(i, "Status") == TableViewer.packageStatus[TableViewer.packageStatus.Count - 1])
+                            {
+                                tabPackages.SetColumnData(j, "Data_Odbioru", new DateOnly() { Date = DateTime.Now });
+                            } 
+                            tabPackages.SetColumnData(j, "Status", tab.FindColumnData(i, "Status").ToString());
+                            
+                            //log modyfikacji!
+                        }
                     }
                 }
             }
