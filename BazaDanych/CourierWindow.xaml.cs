@@ -24,7 +24,7 @@ namespace BazaDanych
         TableSchema schemaPackages;
         TableSchema schemaClients;
         Table tabPackages;
-        Table tabClients;
+        static Table tabClients;
 
         DatabaseConnector dbConnector;
         ConnectionSettings connSettings;
@@ -105,18 +105,19 @@ namespace BazaDanych
                 MessageBox.Show("Brak paczek do pokazania!");
                 return;
             }
+
             for (int row = 0; row < tabPackages.Rows.Count; row++ )
             {
                 object[] package = new object[tabAllCourierPackages.TableSchema.Columns.Count];
                 tabAllCourierPackages.Rows.Add(package);
 
-                package[0] = tabPackages.FindColumnData(row, "Nr_Zlecenia");
+                package[0] = tabPackages.FindColumnData(row, "Id");
                 int odbId = (Int16)tabPackages.FindColumnData(row, "Odbiorca");
                 for (int r = 0; r < tabClients.Rows.Count; r++)
                 {
                     if ((Int16)tabClients.FindColumnData(r, "ID") == odbId)
                     {
-                        package[1] = (string)tabClients.FindColumnData(r, "Imie") + " " + (string)tabClients.FindColumnData(r, "Nazwisko");
+                        package[1] = (string)tabClients.FindColumnData(r, "Nazwa");
                         break;
                     }
                 }
@@ -125,12 +126,24 @@ namespace BazaDanych
                 {
                     if ((Int16)tabClients.FindColumnData(r, "ID") == nadId)
                     {
-                        package[2] = (string)tabClients.FindColumnData(r, "Imie") +" "+ (string)tabClients.FindColumnData(r, "Nazwisko");
+                        package[2] = (string)tabClients.FindColumnData(r, "Nazwa");
                         break;
                     }
                 }
 
                 package[3] = tabPackages.FindColumnData(row, "Adres_Docelowy");
+
+                if (package[3] == null)
+                {
+                    for (int i = 0; i < tabClients.Rows.Count; i++)
+                    {
+                        if ((Int16)tabClients.FindColumnData(i, "Id") == odbId)
+                        {
+                            package[3] = (string)tabClients.FindColumnData(i, "Adres");
+                        }
+                    }
+                }
+
                 package[4] = tabPackages.FindColumnData(row, "Data_Nadania");
                 package[5] = tabPackages.FindColumnData(row, "Data_Odbioru");
                 package[6] = tabPackages.FindColumnData(row, "Status");
@@ -241,7 +254,7 @@ namespace BazaDanych
             };
             cardsTableViews.Add(tabView);
             _tableViewSwitcher.SelectedItem = tabView;
-            tabView.ShowEditButtons = false;
+            tabView.ShowEditButtons = true;
         }
 
         private void SaveChanges(object sender, RoutedEventArgs e)
@@ -393,6 +406,11 @@ namespace BazaDanych
                 type = Type.GetType("System.String")
             });
             return schema;
+        }
+
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

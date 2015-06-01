@@ -79,6 +79,8 @@ namespace BazaDanych
                     this.RaiseEvent(e);
                 };
             Update();
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(mainView.ItemsSource);
+            view.Filter = PackageFilter;
         }
 
         public void Update()
@@ -180,5 +182,42 @@ namespace BazaDanych
         public event RecordDelegate RecordReadyToEdit;
         public event RecordDelegate RecordReadyToDelete;
         public event RoutedEventHandler CloseTab;
+
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            textBoxSearch.Text = "";
+            textBoxSearch.Visibility = textBoxSearch.Visibility == System.Windows.Visibility.Hidden ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
+        }
+
+        private bool PackageFilter(object item) 
+        {
+            if (String.IsNullOrEmpty(textBoxSearch.Text))
+                return true;
+            else
+            {
+                String[] keywords = textBoxSearch.Text.Split(' ');
+                
+                for (int j = 0; j < keywords.Length; j++)
+                {
+                    bool contains = false;
+                    for (int i = 0; i < (item as object[]).Length; i++)
+                    {
+                        if ((item as object[])[i] != null && (item as object[])[i].ToString().Contains(keywords[j]))
+                        {
+                            contains = true;
+                            break;
+                        }
+                    }
+                    if (!contains)
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        private void textBoxSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CollectionViewSource.GetDefaultView(mainView.ItemsSource).Refresh();
+        }
     }
 }

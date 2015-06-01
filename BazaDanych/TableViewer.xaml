@@ -6,14 +6,17 @@
              xmlns:local="clr-namespace:BazaDanych"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="400">
-    <DockPanel MinHeight="100" MinWidth="100">
+
+    <DockPanel MinHeight="100" MinWidth="100" Grid.Row="0" Grid.Column="0">
         <DockPanel x:Name="toolbar" Background="LightGray" DockPanel.Dock="Top" Height="30" LastChildFill="False">
-            <Button x:Name="butNewRecord" Content="NEW" BorderBrush="Black" Margin="2" Click="butNewRecord_Click" IsEnabled="False"/>
-            <Button x:Name="butEditRecord" Content="EDIT" BorderBrush="Black" Margin="2" Click="butEditRecord_Click" IsEnabled="False"/>
-            <Button x:Name="butDeleteRecord" Content="DELETE" BorderBrush="Black" Margin="2" Click="butDeleteRecord_Click" IsEnabled="False"/>
-            <Button Content="FILTER" BorderBrush="Black" Margin="2"/>
+            <Button x:Name="butNewRecord" Content="Nowy" BorderBrush="Black" Margin="2" Click="butNewRecord_Click" IsEnabled="False"/>
+            <Button x:Name="butEditRecord" Content="Edytuj" BorderBrush="Black" Margin="2" Click="butEditRecord_Click" IsEnabled="False"/>
+            <Button x:Name="butDeleteRecord" Content="Usuń" BorderBrush="Black" Margin="2" Click="butDeleteRecord_Click" IsEnabled="False"/>
+            <Button x:Name="btnSearch" Content="Szukaj.." BorderBrush="Black" Margin="2" Click="btnSearch_Click" IsEnabled="True"/>
+            <TextBox x:Name="textBoxSearch" Grid.Row="1" Margin="2" TextChanged="textBoxSearch_TextChanged" IsEnabled="True" Visibility="Hidden"
+                     Width="150"/>
         </DockPanel>
-        <ListView x:Name="mainView" DockPanel.Dock="Bottom" GridViewColumnHeader.Click="SortTable">
+        <ListView x:Name="mainView" DockPanel.Dock="Bottom" GridViewColumnHeader.Click="SortTable" Grid.Row="2">
 
             <ListView.View >
                 <GridView x:Name="tableView" AllowsColumnReorder="True">
@@ -32,7 +35,7 @@
         </ListView>
 
     </DockPanel>
-        <TabItem.HeaderTemplate>
+    <TabItem.HeaderTemplate>
         <DataTemplate>
             <StackPanel Orientation="Horizontal" >
                 <Label Content="{Binding}"/>

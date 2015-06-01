@@ -258,5 +258,10 @@ namespace BazaDanych
                 MessageBox.Show("Błąd pobierania użytkowników:\n " + ex.Message);
             }
         }
+
+        public void FindByKeyword()
+        {
+
+        }
     }
 }

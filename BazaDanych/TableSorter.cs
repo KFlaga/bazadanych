@@ -67,9 +67,9 @@ namespace BazaDanych
                             return 1;
                         if (A[columnPos] == null)
                             return -1;
-                        if ((int)A[columnPos] > (int)B[columnPos])
+                        if ((Int16)A[columnPos] > (Int16)B[columnPos])
                             return 1;
-                        else if ((int)A[columnPos] < (int)B[columnPos])
+                        else if ((Int16)A[columnPos] < (Int16)B[columnPos])
                             return -1;
                         else
                             return 0;

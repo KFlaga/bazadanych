@@ -93,6 +93,7 @@
     </Compile>
     <Compile Include="SqlCommandBuilder.cs" />
     <Compile Include="TableSchema.cs" />
+    <Compile Include="TableSorter.cs" />
     <Compile Include="TableViewer.xaml.cs">
       <DependentUpon>TableViewer.xaml</DependentUpon>
     </Compile>

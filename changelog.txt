@@ -1,0 +1,2 @@
+* jeżeli adres_docelowy jest pusty podaje adres odbiorcy
+* sortowanie wg keywordów
