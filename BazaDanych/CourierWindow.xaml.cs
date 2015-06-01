@@ -267,6 +267,7 @@ namespace BazaDanych
             tabView.ShowEditButtons = true;
         }
 
+
         private void SaveChanges(object sender, RoutedEventArgs e)
         {
             if (!dbConnector.Connected)
@@ -316,6 +317,8 @@ namespace BazaDanych
                                 if (date != null)
                                     tabPackages.SetColumnData(j, "Data_Odbioru", null);
                             }
+                            Logger.Log("Użytkownik ID={0}({1}) zmienił status przesyłki ID={2} z \"{3}\" na \"{4}\".", user.EmplId.ToString(), user.Login, j.ToString(), 
+                                tabPackages.FindColumnData(j, "Status"), tab.FindColumnData(i, "Status"));
                             tabPackages.SetColumnData(j, "Status", tab.FindColumnData(i, "Status").ToString());
                             
                             //log modyfikacji!

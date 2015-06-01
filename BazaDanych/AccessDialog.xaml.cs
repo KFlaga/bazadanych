@@ -67,7 +67,7 @@ namespace BazaDanych
                 OpenAdminWindow();
             else if (u.Type == 1) // dostawca
                 OpenCourierWindow(u);
-
+            Logger.Log(String.Format("Użytkownik ID={0}({1}) zalogował się do systemu.", u.EmplId, u.Login));
             this.Close();
         }
 

@@ -259,9 +259,5 @@ namespace BazaDanych
             }
         }
 
-        public void FindByKeyword()
-        {
-
-        }
     }
 }

@@ -272,5 +272,8 @@ namespace BazaDanych
             }
             Update();
         }
+
+        public delegate void Action(String partialLogMsg);
+        public event Action StatusChanged;
     }
 }

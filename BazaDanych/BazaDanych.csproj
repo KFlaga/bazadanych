@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="DatabaseConnector.cs" />
     <Compile Include="DateOnly.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="RecordDialog.xaml.cs">
       <DependentUpon>RecordDialog.xaml</DependentUpon>
     </Compile>
