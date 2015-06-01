@@ -22,6 +22,7 @@ namespace BazaDanych
     /// </summary>
     public partial class TableViewer : TabItem
     {
+        private List<String> packageStatus = new List<string> { "Anulowano", "Zlecona przez klienta", "W drodze do magazynu", "W drodze do odbiorcy", "Odebrana" };
         bool showToolbar = true;
         private TableSorter sorter;
         public Table TableSource { get; set; }
@@ -218,6 +219,43 @@ namespace BazaDanych
         private void textBoxSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             CollectionViewSource.GetDefaultView(mainView.ItemsSource).Refresh();
+        }
+
+        private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var item = sender as ListViewItem;
+            if (item != null && item.IsSelected)
+            {
+                mainView.SelectedItem = item;
+            }
+        }
+
+        private void btnCompleted_Click(object sender, RoutedEventArgs e)
+        {
+            if (mainView.SelectedItem == null)
+                return;
+            var item = (mainView.SelectedItem as object[]);
+            var status = item[6].ToString();
+            if (packageStatus.Contains(status))
+            {
+                if (packageStatus.IndexOf(status) < packageStatus.Count - 1)
+                    item[6] = packageStatus[packageStatus.IndexOf(status) + 1];
+            }
+            Update();
+        }
+
+        private void btnUndo_Click(object sender, RoutedEventArgs e)
+        {
+            if (mainView.SelectedItem == null)
+                return;
+            var item = (mainView.SelectedItem as object[]);
+            var status = item[6].ToString();
+            if (packageStatus.Contains(status))
+            {
+                if (packageStatus.IndexOf(status) > 0)
+                    item[6] = packageStatus[packageStatus.IndexOf(status) - 1];
+            }
+            Update();
         }
     }
 }

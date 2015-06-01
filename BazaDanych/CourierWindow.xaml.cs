@@ -285,6 +285,17 @@ namespace BazaDanych
                     tabPackages.SetColumnData(idsToDeliverToClient[row], "Status", "Odebrana");
                 }
             }
+            for (int i = 0; i < tabAllCourierPackages.Rows.Count; i++)
+            {
+                for (int j = 0; j < tabPackages.Rows.Count; j++)
+                {
+                    if (tabAllCourierPackages.Rows[i][0] == tabPackages.Rows[j][0])
+                    {
+                        tabPackages.SetColumnData(j, "Status", tabAllCourierPackages.FindColumnData(i, "Status").ToString());
+                    }
+                }
+            }
+
 
             // Wrzuć zmiany do bazy danych
             for (int row = 0; row < tabPackages.Rows.Count; row++)

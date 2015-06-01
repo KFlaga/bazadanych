@@ -1,2 +1,5 @@
+14:35
+* poprawione zmiany statusów
+11:00
 * jeżeli adres_docelowy jest pusty podaje adres odbiorcy
 * sortowanie wg keywordów
