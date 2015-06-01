@@ -309,7 +309,13 @@ namespace BazaDanych
                                 tab.FindColumnData(i, "Status") == TableViewer.packageStatus[TableViewer.packageStatus.Count - 1])
                             {
                                 tabPackages.SetColumnData(j, "Data_Odbioru", new DateOnly() { Date = DateTime.Now });
-                            } 
+                            }
+                            else
+                            {
+                                var date = tabPackages.FindColumnData(j, "Data_Odbioru");
+                                if (date != null)
+                                    tabPackages.SetColumnData(j, "Data_Odbioru", null);
+                            }
                             tabPackages.SetColumnData(j, "Status", tab.FindColumnData(i, "Status").ToString());
                             
                             //log modyfikacji!
