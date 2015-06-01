@@ -168,13 +168,13 @@ namespace BazaDanych
                 object[] package = new object[table.TableSchema.Columns.Count];
                 table.Rows.Add(package);
 
-                package[0] = tabPackages.FindColumnData(row, "Nr_Zlecenia");
+                package[0] = tabPackages.FindColumnData(row, "Id");
                 int odbId = (Int16)tabPackages.FindColumnData(row, "Odbiorca");
                 for (int r = 0; r < tabClients.Rows.Count; r++)
                 {
                     if ((Int16)tabClients.FindColumnData(r, "ID") == odbId)
                     {
-                        package[1] = (string)tabClients.FindColumnData(r, "Imie") + " " + (string)tabClients.FindColumnData(r, "Nazwisko");
+                        package[1] = (string)tabClients.FindColumnData(r, "Nazwa");
                         break;
                     }
                 }
@@ -183,13 +183,23 @@ namespace BazaDanych
                 {
                     if ((Int16)tabClients.FindColumnData(r, "ID") == nadId)
                     {
-                        package[2] = (string)tabClients.FindColumnData(r, "Imie") + " " + (string)tabClients.FindColumnData(r, "Nazwisko");
+                        package[2] = (string)tabClients.FindColumnData(r, "Nazwa");
                         break;
                     }
                 }
-
                 package[3] = tabPackages.FindColumnData(row, "Adres_Docelowy");
-                package[4] = "NIE";
+
+                if (package[3] == null)
+                {
+                    for (int i = 0; i < tabClients.Rows.Count; i++)
+                    {
+                        if ((Int16)tabClients.FindColumnData(i, "Id") == odbId)
+                        {
+                            package[3] = (string)tabClients.FindColumnData(i, "Adres");
+                        }
+                    }
+                }
+                package[4] = tabPackages.FindColumnData(row, "Status");
                 ids.Add(row);
             }
 
@@ -224,10 +234,10 @@ namespace BazaDanych
             Table table = ((TableViewer)_tableViewSwitcher.SelectedItem).TableSource;
             if (row != -1)
             {
-                if ((string)table.Rows[row][4] == "NIE")
-                    table.Rows[row][4] = "TAK";
-                else
-                    table.Rows[row][4] = "NIE";
+                //if ((string)table.Rows[row][4] == "NIE")
+                //    table.Rows[row][4] = "TAK";
+                //else
+                //    table.Rows[row][4] = "NIE";
                 ((TableViewer)_tableViewSwitcher.SelectedItem).Update();
             }
         }
@@ -285,13 +295,14 @@ namespace BazaDanych
                     tabPackages.SetColumnData(idsToDeliverToClient[row], "Status", "Odebrana");
                 }
             }
-            for (int i = 0; i < tabAllCourierPackages.Rows.Count; i++)
+            Table tab = (_tableViewSwitcher.SelectedItem as TableViewer).TableSource;
+            for (int i = 0; i < tab.Rows.Count; i++)
             {
-                for (int j = 0; j < tabPackages.Rows.Count; j++)
+                for (int j = 0; j < tab.Rows.Count; j++)
                 {
-                    if (tabAllCourierPackages.Rows[i][0] == tabPackages.Rows[j][0])
+                    if (tab.Rows[i][0] == tabPackages.Rows[j][0])
                     {
-                        tabPackages.SetColumnData(j, "Status", tabAllCourierPackages.FindColumnData(i, "Status").ToString());
+                        tabPackages.SetColumnData(j, "Status", tab.FindColumnData(i, "Status").ToString());
                     }
                 }
             }
@@ -413,7 +424,7 @@ namespace BazaDanych
             });
             schema.Columns.Add(new ColumnSchema()
             {
-                Name = "Załatwione?",
+                Name = "Status",
                 type = Type.GetType("System.String")
             });
             return schema;

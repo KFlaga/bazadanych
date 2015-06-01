@@ -235,11 +235,18 @@ namespace BazaDanych
             if (mainView.SelectedItem == null)
                 return;
             var item = (mainView.SelectedItem as object[]);
-            var status = item[6].ToString();
+            int idx = -1;
+            for (int i = 0; i < packageStatus.Count; i++)
+            {
+                idx = Array.IndexOf(item, packageStatus[i]);
+                if (idx > 0)
+                    break;
+            }
+            var status = item[idx].ToString();
             if (packageStatus.Contains(status))
             {
                 if (packageStatus.IndexOf(status) < packageStatus.Count - 1)
-                    item[6] = packageStatus[packageStatus.IndexOf(status) + 1];
+                    item[idx] = packageStatus[packageStatus.IndexOf(status) + 1];
             }
             Update();
         }
@@ -249,11 +256,19 @@ namespace BazaDanych
             if (mainView.SelectedItem == null)
                 return;
             var item = (mainView.SelectedItem as object[]);
-            var status = item[6].ToString();
+            int idx = -1;
+            for (int i = 0; i < packageStatus.Count; i++)
+            {
+                idx = Array.IndexOf(item, packageStatus[i]);
+                if (idx > 0)
+                    break;
+            }
+            var status = item[idx].ToString();
+            
             if (packageStatus.Contains(status))
             {
                 if (packageStatus.IndexOf(status) > 0)
-                    item[6] = packageStatus[packageStatus.IndexOf(status) - 1];
+                    item[idx] = packageStatus[packageStatus.IndexOf(status) - 1];
             }
             Update();
         }
