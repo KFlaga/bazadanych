@@ -12,25 +12,25 @@
             </StatusBar>
         </DockPanel>
         <Border DockPanel.Dock="Left" Width="112" BorderBrush="Black" BorderThickness="1">
-            <StackPanel Width="110" Background="LightGray">
-                <Button Height="40" Margin="5" Click="ShowTable_AllPackages">
+            <StackPanel Width="110" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+                <Button Height="40" Margin="5" Click="ShowTable_AllPackages" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}">
                     <TextBlock TextWrapping="Wrap" TextAlignment="Center">Wszystkie Przesyłki</TextBlock>
                 </Button>
-                <Button Height="40" Margin="5" Click="ShowTable_ToDeliverToClient">
-                    <TextBlock TextWrapping="Wrap" TextAlignment="Center">Do Dostarczenia Do Klienta</TextBlock>
+                <Button Height="40" Margin="5" Click="ShowTable_ToDeliverToClient" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}">
+                    <TextBlock TextWrapping="Wrap" TextAlignment="Center" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}">Do Dostarczenia Do Klienta</TextBlock>
                 </Button>
-                <Button Height="40" Margin="5" Click="ShowTable_ToDeliverToStore">
+                <Button Height="40" Margin="5" Click="ShowTable_ToDeliverToStore" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}">
                     <TextBlock TextWrapping="Wrap" TextAlignment="Center">Do Dostarczenia Do Magazynu</TextBlock>
                 </Button>
-                <Button Height="40" Margin="5" Click="ShowTable_ToTakeFromStore">
+                <Button Height="40" Margin="5" Click="ShowTable_ToTakeFromStore" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}">
                     <TextBlock TextWrapping="Wrap" TextAlignment="Center">Do Odebrania Z Magazynu</TextBlock>
                 </Button>
-                <Button Height="40" Margin="5" Click="ShowTable_ToTakeFromClient">
+                <Button Height="40" Margin="5" Click="ShowTable_ToTakeFromClient" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}">
                     <TextBlock TextWrapping="Wrap" TextAlignment="Center">Do Odebrania Od Klienta</TextBlock>
                 </Button>
             </StackPanel>
         </Border>
         <TabControl x:Name="_tableViewSwitcher" DockPanel.Dock="Bottom" MinWidth="200"/>
-        
+
     </DockPanel>
 </Window>
