@@ -43,6 +43,23 @@ namespace BazaDanych
         }
         public int SelectedRow { get { return mainView.SelectedIndex; } }
 
+        private bool __isMainWindow;
+
+        public bool IsMainWindow
+        {
+            get { return __isMainWindow; }
+            set 
+            { 
+                __isMainWindow = value;
+                if (value == true)
+                {
+                    butNewRecord.IsEnabled = true;
+                    butDeleteRecord.IsEnabled = true;
+                    butEditRecord.IsEnabled = true;
+                }
+            }
+        }
+        
         public TableViewer()
         {
             InitializeComponent();

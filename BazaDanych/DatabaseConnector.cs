@@ -157,7 +157,7 @@ namespace BazaDanych
 
         public List<TableSchema> GetTableNames(string tablespace = "USERS")
         {
-            OracleCommand cmd = GetCommand("select table_name, owner from ALL_TABLES where tablespace_name='"+tablespace+"'", null);
+            OracleCommand cmd = GetCommand("select table_name, owner from dba_tables where tablespace_name='"+tablespace+"'", null);
             cmd.CommandTimeout = 5;
             List<TableSchema> tables = new List<TableSchema>();
 

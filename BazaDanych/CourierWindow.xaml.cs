@@ -273,29 +273,29 @@ namespace BazaDanych
             if (!dbConnector.Connected)
                 return;
             // Dla każdej załatwionej paczki zmień status (i ew. datę)
-            for (int row = 0; row < tabToTakeFromStore.Rows.Count; row++)
-            {
-                if ((string)tabToTakeFromStore.Rows[row][4] == "TAK")
-                    tabPackages.SetColumnData(idsToTakeFromStore[row], "Status", "W drodze do klienta");
-            }
-            for (int row = 0; row < tabToTakeFromStore.Rows.Count; row++)
-            {
-                if ((string)tabToDeliverToStore.Rows[row][4] == "TAK")
-                    tabPackages.SetColumnData(idsToDeliverToStore[row], "Status", "Oczekująca");
-            }
-            for (int row = 0; row < tabToTakeFromStore.Rows.Count; row++)
-            {
-                if ((string)tabToTakeFromClient.Rows[row][4] == "TAK")
-                    tabPackages.SetColumnData(idsToTakeFromClient[row], "Status", "W drodze do magazynu");
-            }
-            for (int row = 0; row < tabToTakeFromStore.Rows.Count; row++)
-            {
-                if ((string)tabToDeliverToClient.Rows[row][4] == "TAK")
-                {
-                    tabPackages.SetColumnData(idsToDeliverToClient[row], "Data_Odbioru", new DateOnly() { Date = DateTime.Now });
-                    tabPackages.SetColumnData(idsToDeliverToClient[row], "Status", "Odebrana");
-                }
-            }
+            //for (int row = 0; row < tabToTakeFromStore.Rows.Count; row++)
+            //{
+            //    if ((string)tabToTakeFromStore.Rows[row][4] == "TAK")
+            //        tabPackages.SetColumnData(idsToTakeFromStore[row], "Status", "W drodze do klienta");
+            //}
+            //for (int row = 0; row < tabToTakeFromStore.Rows.Count; row++)
+            //{
+            //    if ((string)tabToDeliverToStore.Rows[row][4] == "TAK")
+            //        tabPackages.SetColumnData(idsToDeliverToStore[row], "Status", "Oczekująca");
+            //}
+            //for (int row = 0; row < tabToTakeFromStore.Rows.Count; row++)
+            //{
+            //    if ((string)tabToTakeFromClient.Rows[row][4] == "TAK")
+            //        tabPackages.SetColumnData(idsToTakeFromClient[row], "Status", "W drodze do magazynu");
+            //}
+            //for (int row = 0; row < tabToTakeFromStore.Rows.Count; row++)
+            //{
+            //    if ((string)tabToDeliverToClient.Rows[row][4] == "TAK")
+            //    {
+            //        tabPackages.SetColumnData(idsToDeliverToClient[row], "Data_Odbioru", new DateOnly() { Date = DateTime.Now });
+            //        tabPackages.SetColumnData(idsToDeliverToClient[row], "Status", "Odebrana");
+            //    }
+            //}
             Table tab = (_tableViewSwitcher.SelectedItem as TableViewer).TableSource;
             for (int i = 0; i < tab.Rows.Count; i++)
             {
@@ -320,8 +320,6 @@ namespace BazaDanych
                             Logger.Log("Użytkownik ID={0}({1}) zmienił status przesyłki ID={2} z \"{3}\" na \"{4}\".", user.EmplId.ToString(), user.Login, j.ToString(), 
                                 tabPackages.FindColumnData(j, "Status"), tab.FindColumnData(i, "Status"));
                             tabPackages.SetColumnData(j, "Status", tab.FindColumnData(i, "Status").ToString());
-                            
-                            //log modyfikacji!
                         }
                     }
                 }

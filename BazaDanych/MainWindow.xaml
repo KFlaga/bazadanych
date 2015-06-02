@@ -25,7 +25,7 @@
                 </Grid.RowDefinitions>
                 <DockPanel Grid.Row="0">
                     <Border DockPanel.Dock="Top" BorderBrush="DimGray" BorderThickness="2">
-                        <Label Content="TABELE" TextBlock.FontSize="15" TextBlock.FontWeight="ExtraBold" Background="LightSlateGray" HorizontalContentAlignment="Center"/>
+                        <Label Content="TABELE" TextBlock.FontSize="15" TextBlock.FontWeight="ExtraBold" Background="White" HorizontalContentAlignment="Center"/>
                     </Border>
                     <ListBox DockPanel.Dock="Bottom" x:Name="_tableList" Background="LightGray" SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Auto" Height="Auto">
                         <ListBox.ContextMenu>
@@ -38,7 +38,7 @@
                 <GridSplitter Grid.Row="1" ResizeDirection="Rows" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Black"  Height="2"/>
                 <DockPanel Grid.Row="2">
                     <Border DockPanel.Dock="Top" BorderBrush="DimGray" BorderThickness="2">
-                        <Label Content="WIDOKI" TextBlock.FontSize="15" TextBlock.FontWeight="ExtraBold" Background="LightSlateGray" HorizontalContentAlignment="Center"/>
+                        <Label Content="WIDOKI" TextBlock.FontSize="15" TextBlock.FontWeight="ExtraBold" Background="White" HorizontalContentAlignment="Center"/>
                     </Border>
                     <ListBox DockPanel.Dock="Bottom" x:Name="_viewList" Background="LightGray" SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Auto" Height="Auto">
                         <ListBox.ContextMenu>

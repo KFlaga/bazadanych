@@ -95,9 +95,9 @@ namespace BazaDanych
                 for (int t = 0; t < mainTableSchemas.Count; t++ )
                 {
                     dbConnector.GetTableSchema(mainTableSchemas[t]);
-                    dbConnector.GetTablePrivileges(mainTableSchemas[t]);
-                    dbConnector.GetTableForeignKeys(mainTableSchemas[t]);
-                    dbConnector.GetValueConstraints(mainTableSchemas[t]);
+                    //dbConnector.GetTablePrivileges(mainTableSchemas[t]);
+                    //dbConnector.GetTableForeignKeys(mainTableSchemas[t]);
+                    //dbConnector.GetValueConstraints(mainTableSchemas[t]);
                     //if (mainTableSchemas[t].CanSelect)
                         addTableToView(mainTableSchemas[t]);
                 }
@@ -145,6 +145,8 @@ namespace BazaDanych
                 return;
 
             TableViewer tabView = new TableViewer();
+            tabView.ShowEditButtons = true;
+            tabView.IsMainWindow = true;
             tabView.RecordReadyToInsert += InsertRecords;
             tabView.RecordReadyToEdit += tabView_RecordReadyToEdit;
             tabView.RecordReadyToDelete += tabView_RecordReadyToDelete;

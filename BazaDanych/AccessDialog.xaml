@@ -6,8 +6,9 @@
             <Label Content="Nazwa użytkownika" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <TextBox x:Name="textBoxLogin" HorizontalAlignment="Center" Height="23" Margin="0,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150"/>
             <Label Content="Hasło" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,49,0,0"/>
-            <Button x:Name="btnConfirm" Content="Zaloguj" HorizontalAlignment="Center" Margin="0,105,100,0" VerticalAlignment="Top" Width="75" Height="20" Click="btnConfirm_Click"/>
+        <PasswordBox x:Name="passwordBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="150" Height="23" Margin="0,75,0,0"/>
+        <Button x:Name="btnConfirm" Content="Zaloguj" HorizontalAlignment="Center" Margin="0,105,100,0" VerticalAlignment="Top" Width="75" Height="20" Click="btnConfirm_Click"/>
         <Button x:Name="btnReset" Content="Resetuj" HorizontalAlignment="Center" Margin="100,105,0,0" VerticalAlignment="Top" Width="75" Height="20" Click="btnReset_Click" />
-            <PasswordBox x:Name="passwordBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="150" Height="23" Margin="0,75,0,0"/>
+            
         </Grid>
 </Window>
